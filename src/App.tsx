@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import './App.scss';
 import { Clock } from './Components/Clock';
+import React from 'react';
 
 function getRandomName(): string {
   const value = Date.now().toString().slice(-4);
@@ -14,7 +15,7 @@ type State = {
 };
 
 export class App extends Component<{}, State> {
-  state = {
+  state: State = {
     clockName: 'Clock-0',
     hasClock: true,
   };
@@ -40,15 +41,6 @@ export class App extends Component<{}, State> {
     document.addEventListener('click', this.handleClick);
   }
 
-  componentDidUpdate(_: unknown, prevState: Readonly<State>): void {
-    if (this.state.clockName !== prevState.clockName && this.state.hasClock) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `Renamed from ${prevState.clockName} to ${this.state.clockName}`,
-      );
-    }
-  }
-
   componentWillUnmount(): void {
     window.clearInterval(this.timerId);
     document.removeEventListener('contextmenu', this.handleRightClick);
@@ -59,7 +51,6 @@ export class App extends Component<{}, State> {
     return (
       <div className="App">
         <h1>React clock</h1>
-
         {this.state.hasClock && <Clock name={this.state.clockName} />}
       </div>
     );
